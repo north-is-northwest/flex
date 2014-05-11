@@ -1,0 +1,215 @@
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    user-select: none;
+
+    font-family: 'Helvetica Neue', 'Helvetica', Arial;
+    font-weight: 400;
+}
+
+html, body {
+    color: #000;
+    background-color: #fff;
+    margin-bottom: 2em;
+}
+
+header, article {
+    width: 95%;
+    margin: 1.25em auto;
+}
+
+header {
+    margin-bottom: 2.5em;
+}
+
+input[type=text], input[type=number], input[type=url], 
+input[type=email], input[type=password], input[type=tel] {
+    margin: 0;
+    width: 100%; 
+    height: 40px;
+    line-height: 40px; 
+    font-size: 17px;
+}
+
+input:disabled {
+    color: #000;
+}
+
+/* shorten number field */
+input[type=number] {
+    font-size: 1.5em;
+    width: 3em;
+}
+
+button {
+    font-size: 1em;
+}
+fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+#hud, #in, .entry input {
+    opacity: 1;
+    border: none;
+    outline: none;
+    background-color: #fff;
+    -webkit-appearance: none;
+}
+#hud { /* current time */
+    cursor: default;
+    font-size: 2.2em;
+    text-align: right;
+    font-weight: 300;
+    float: right;
+    margin: -0.2em -0.5em 0 0;
+}
+#in { /* play / pause button */
+    font-size: 2.2em;
+    text-align: left;
+    padding: 1px;
+}
+
+section {
+    position: relative;
+    min-height: 0.5em;
+    font-size: 0.7em;
+    padding: 2em 0 1.7em 1em;
+    margin-bottom: 0.7em;
+    color: #ccc;
+    border-top: 1px currentColor solid;
+}
+section.today {
+    color: #000;
+}
+section h2 {
+    display: table;
+    position: absolute;
+    cursor: pointer;
+    top: -1.6em;
+    left: 0;
+    padding-right: .5em;
+    background-color: #fff;
+    font-size: 1.7em;
+    font-weight: inherit;
+    color: inherit;
+}
+section .worked {
+    position: absolute;
+    top: -0.7em;
+    right: 0;
+    background-color: #fff;
+    z-index: 2;
+}
+section .worked:before { /* white space on left */
+    content: "";
+    position: absolute;
+    right: 100%;
+    width: 0.5em;
+    height: 100%;
+    background-color: inherit;
+}
+section .compensation,
+section .elapsed {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    padding: 0.1em 0.5em;
+    margin-top: -0.2em;
+    margin-left: 0.5em;
+    color: #fff;
+    background-color: #ccc;
+    border-radius: 0.2em;
+}
+section elapsed:empty {
+    display: none;
+}
+
+section .compensation {
+    cursor: pointer;
+    text-align: right;
+}
+section .compensation span {
+    display: block;
+}
+section .compensation fieldset {
+    display: none;
+}
+section .entry,
+section .remain {
+    text-align: center;
+    display: none;
+}
+section .entry {
+    position: relative;
+    padding: 0.1em 0.5em;
+    margin: 0 auto 1.5em auto;
+    border: 1px solid currentColor;
+}
+section .entry input {
+    padding: 0;
+    margin: 0;
+    color: currentColor;
+}
+section .entry.active {
+    border-radius: 0.2em 0 0 0.2em;
+}
+section .entry.paused {
+    margin-right: 1em;
+    margin-left: -1px;
+    border-radius: 0 0.2em 0.2em 0;
+}
+section .remain {
+    font-size: 2.4em;
+    margin: 0 auto;
+}
+section .remain.overtime {
+    color: #5d1;
+}
+
+/* today toggling */
+section.today .compensation,
+section.today .elapsed {
+    background-color: #000;
+    
+}
+section.today .entry,
+section.active-day .entry {
+    display: inline-block;
+}
+section.today .remain {
+    display: table;
+}
+
+/* settings */
+input[name=settings] {
+    display: block;
+    width: 95%;
+    margin: 0 auto;
+    font-size: 2em;
+    visibility: hidden;
+}
+input[name=settings]:before {
+    visibility: visible;
+}
+#settings {
+    display: none;
+    width: 95%;
+    padding-top: 2em;
+    margin: 0 auto;
+}
+input[name=settings]:checked + #settings {
+    display: block;
+}
+#settings fieldset {
+    padding: 0.5em 0;
+}
+
+
+template {
+    display: none;
+}
