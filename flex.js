@@ -4,7 +4,7 @@
 /*//======================================\\*\
                     events
 *///======================================\\\*
-$('#in').on('click', function() {
+$('#in').on('touchstart', function() {
     var time_in_hud = hhmm_to_unix($('#hud').val()),
         future_records = user.record.filter(function(record) { 
             return record.day > get_day(); 
@@ -44,7 +44,7 @@ $(document)
         //delete entry and next entry (if it exists) to maintain sequence of play, pause, etc...
         user.record.splice(entry_index, !user.record[entry_index + 1] ? 1 : 2);
         //set status according to most recent entry if it exits
-        user.active = !user.record.length ? false : user.record[user.record.length - 1].active;
+        user.active = !user.record.length ? false : latest_record().active;
 
     } else { //set time difference
         var set_timestamp = timestamp - (Date.parse('1970-04-20T' + old_time) - Date.parse('1970-04-20T' + set_time));
@@ -57,7 +57,7 @@ $(document)
 });
 
 //settings change
-$('#settings button, #settings input').on('click', function() {
+$('#settings button, #settings input').on('touchstart', function() {
     redraw();
 });
 //open settings - scroll down
@@ -85,20 +85,20 @@ $('#settings input[type=number]').on('change', function() {
 });
 
 //reveal entry from past day
-$(document).on('click', 'section:not(.today):not(.active-day) h2', function() {
+$(document).on('touchstart', 'section:not(.today):not(.active-day) h2', function() {
     var visibility = ['inline-block', 'none'][+($(this).parent().find('.entry').css('display') === 'inline-block')];
     
     $(this).parent().find('.entry').css('display', visibility);
 });
 
 //force clear record
-$(document).on('click', '#settings #clear', function(){
+$(document).on('touchstart', '#settings #clear', function(){
     clear_record(); 
     $('input[name=settings]').attr('checked', false); //hides settings
 });
 
 //compensation
-$(document).on('click', 'section .compensation', function() {
+$(document).on('touchstart', 'section .compensation', function() {
     expand_compensation($(this).closest('.compensation'));
 });
 $(document).on('change', 'section .compensation select', function() {
@@ -130,13 +130,13 @@ $(document).on('change', 'section .compensation .day_off', function() {
     $(this).closest('.compensation').find('select').change();
 });
 //close compensation by clicking outside
-$(document).on('click', function (e) {
+$(document).on('touchstart', function (e) {
     if (!$('.compensation').is(e.target) && $('.compensation').has(e.target).length === 0) {
         $('.compensation fieldset').hide();
     }
 });
 //close compensation by clicking its time again
-$(document).on('click', '.compensation span', function (e) {
+$(document).on('touchstart', '.compensation span', function (e) {
     if ($(this).parent().find('fieldset').is(':visible')) {
         e.stopImmediatePropagation();
         $('.compensation fieldset:visible').hide();
@@ -147,7 +147,6 @@ $(document).on('click', '.compensation span', function (e) {
 /*//======================================\\*\
                 declarations
 *///======================================\\\*
-
 $.fn.removeText = function() {
     return $(this)
     .contents()
@@ -175,7 +174,9 @@ days = [
     ['Friday', 'vendredi'], 
     ['Saturday', 'samedi']
 ],
-label = ['icon-play', 'icon-pause'],
+label = {
+    $in: ['icon-play', 'icon-pause'],
+},
 
 l = function(arr) { //language
     return arr[+(user.lang === 'fr')] || ''; 
@@ -191,6 +192,9 @@ $day = function(num) {
     return $('article section').filter(function() {
         return +$(this).attr('data-day') === +num;
     });
+},
+latest_record = function() {
+    return user.record[user.record.length - 1];
 },
 
 hhmm_to_unix = function(time) { //today hh:mm -> unix time
@@ -230,8 +234,8 @@ time_spent_paused = function() {
         else ms_spent_paused += Math.abs(paused_stamp - timestamp);
     });
     
-    //if paused, include last time paused until now
-    if (!user.active) ms_spent_paused += Math.abs(paused_stamp - $.now());
+    //if paused, add time spent from last paused until now
+    if (!user.active) ms_spent_paused += Math.abs(Math.min(latest_record().timestamp - $.now(), 0));
     
     return ms_spent_paused;
 }, 
@@ -246,7 +250,7 @@ time_compensated = function() {
 }, 
 time_remaining = function() {  
     var sentence_length = user.sentence * 60 * 60 * 1000,
-        time_served = $.now() - user.record[0].timestamp - time_spent_paused() + time_compensated(),
+        time_served = Math.max(latest_record().timestamp, $.now()) - user.record[0].timestamp - time_spent_paused() + time_compensated(),
         time_remains = (sentence_length - time_served) / 1000;
         
         return (time_remains > 0 ? '-' : '+') + s_to_hms(time_remains);
@@ -295,7 +299,7 @@ draw_entries = function() {
         $day(record.day).find('.entries').append($entry);
     });
     
-    $('button#in').prop('class', label[+user.active]);
+    $('button#in').prop('class', label.$in[+user.active]);
 }, 
 draw_elapsed = function() {
     function time_spent_active(day) {
@@ -348,8 +352,7 @@ draw_compensation = function() {
     $.each(Object.keys(user.work_days), function(day) {
         var time = typeof user.compensation[day] !== 'undefined' ? user.compensation[day] : 0,
             compensation_time = s_to_hms(time, true);
-        
-        
+            
         $day(day).find('.compensation span').html('+' + compensation_time).parent()
         .find('  .hours').val(compensation_time.split(':')[0]).end() //<select>
         .find('.minutes').val(compensation_time.split(':')[1]);
@@ -444,7 +447,7 @@ update_time = function() { //update time and remaining time
     
     //current day style
     $('section').each(function() {
-        $(this).toggleClass('active-day', +$(this).attr('data-day') === user.record[user.record.length - 1].day);
+        $(this).toggleClass('active-day', +$(this).attr('data-day') === latest_record().day);
         $(this).toggleClass('today', +$(this).attr('data-day') === get_day());
     });
     
@@ -483,6 +486,5 @@ clear_record = function() {
 *///======================================\\\*
 setInterval(update_time, 50);
 redraw();
-
 
 //});
