@@ -16,7 +16,7 @@ html, body {
     color: #000;
     background-color: #fff;
     margin-bottom: 2em;
-    width: 100%;
+    overflow-x: hidden;
 }
 
 header, article {
