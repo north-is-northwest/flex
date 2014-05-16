@@ -14,14 +14,14 @@
         Chris Bitsakis
     </author>
     
-    <preference name="permissions" value="none"/>
+    <!-- <preference name="permissions" value="none"/> -->
     
     <preference name="Fullscreen" value="true" />
     <preference name="BackgroundColor" value="0xffffffff"/>
     
-    <!-- Do not auto hide splash on iOS -->
-    <preference name="AutoHideSplashScreen" value="true" />
+
+    <!-- <preference name="AutoHideSplashScreen" value="true" /> -->
     
-    <gap:plugin name="org.apache.cordova.splashscreen" />
+    <!-- <gap:plugin name="org.apache.cordova.splashscreen" /> -->
 
 </widget>
