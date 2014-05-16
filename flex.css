@@ -16,7 +16,10 @@ html, body {
     color: #000;
     background-color: #fff;
     margin-bottom: 2em;
-    /* overflow-x: hidden; */
+}
+
+body {
+    width: 97%;
 }
 
 header, article {
