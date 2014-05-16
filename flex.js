@@ -487,8 +487,10 @@ clear_record = function() {
 setInterval(update_time, 50);
 redraw();
 
+/*
 document.addEventListener('deviceready', function() {
     navigator.splashscreen.hide();
 });
+*/
 
 //});
