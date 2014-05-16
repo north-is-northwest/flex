@@ -20,9 +20,7 @@
     <preference name="BackgroundColor" value="0xffffffff"/>
     
     <!-- Do not auto hide splash on iOS -->
-    <preference name="AutoHideSplashScreen" value="false" />
-    <!-- Do not auto hide splash on Android -->
-    <preference name="SplashScreenDelay" value="10000"/>
+    <preference name="AutoHideSplashScreen" value="true" />
     
     <gap:plugin name="org.apache.cordova.splashscreen" />
 
