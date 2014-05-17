@@ -16,5 +16,9 @@
     
     <preference name="Fullscreen" value="true" />
     <preference name="BackgroundColor" value="0xffffffff"/>
+    
+    <gap:config-file platform="ios" parent="UIViewControllerBasedStatusBarAppearance" overwrite="true">
+        <false/>
+    </gap:config-file>
 
 </widget>
