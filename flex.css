@@ -18,9 +18,11 @@ html, body {
     margin-bottom: 2em;
 }
 
+/*
 body {
     width: 97%;
 }
+*/
 
 header, article {
     width: 95%;
